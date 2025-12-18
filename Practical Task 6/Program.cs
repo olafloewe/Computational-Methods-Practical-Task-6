@@ -30,43 +30,45 @@ namespace Practical_Task_6 {
                 g(x) <- exp(x) + 1
                     Integrate(g, 0, 1) 								-> 2.7183   (using the Simpson’s rule)
         */
-        public static double Integrate(Func<double, double> f, double a, double b, string rule = "simpsons", int counter = 0) {
-            string[] rules = { "rectangle-left", "rectangle-mid", "rectangle-right", "trapezoid", "simpson" };
+        public static double Integrate(Func<double, double> f, double a, double b, string rule = "simpsons") {
             double result = 0;
+            int counter = 50;
 
             // weird case guard clause
-            if (a == 0 && b == 0) return 0;
+            if (a == b) return 0;
             // limit guard clause
             if (a > b) throw new ArgumentException("Error: improper limits");
-            
-            // check if provided rule is accepted
-            if(!rules.Contains(rule)) {
-                rule = "simpson"; // default rule
-            }
 
-            // recursive call
-            while (counter < 50 || (b - a) < 0.1) {
-                Console.WriteLine($"Recursion depth: {counter} a: {a} b: {b} b - a: {b - a}");
+            // set counter based on interval length
+            while ((b - a) / counter > 0.1) {
                 counter++;
-                result += Integrate(f, a, (b + a) / 2, rule, counter);
-                result += Integrate(f, (b + a) / 2, b, rule, counter);
             }
 
-            // base case
-            switch (rule) {
-                case "rectangle-left":
-                    return Left(f, a, b);
-                case "rectangle-mid":
-                    return Mid(f, a, b);
-                case "rectangle-right":
-                    return Right(f, a, b);
-                case "trapezoid":
-                    return Trapezoid(f, a, b);
-                case "simpson":
-                    return Simpson(f, a, b);
+            Console.WriteLine($"Using {counter} subintervals for integration.");
+
+            double intervalLength = (b - a) / counter;
+            // calculate all subintervals
+            for (int i = 0; i < counter; i++) {
+                Console.WriteLine($"Integrating from {a + intervalLength * i} to {a + intervalLength * (i + 1)}");
+                // base case
+                switch (rule) {
+                    case "rectangle-left":
+                        result += Left(f, a + intervalLength * i, a + intervalLength * (i + 1));
+                        break;
+                    case "rectangle-mid":
+                        result += Mid(f, a + intervalLength * i, a + intervalLength * (i + 1));
+                        break;
+                    case "rectangle-right":
+                        result += Right(f, a + intervalLength * i, a + intervalLength * (i + 1));
+                        break;
+                    case "trapezoid":
+                        result += Trapezoid(f, a + intervalLength * i, a + intervalLength * (i + 1));
+                        break;
+                    default:
+                        result += Simpson(f, a + intervalLength * i, a + intervalLength * (i + 1));
+                        break;
+                }
             }
-
-
 
             return result;
         }
@@ -80,7 +82,8 @@ namespace Practical_Task_6 {
         // Midpoint rule implementation
         // formula taken from slide 10 of lecture 6
         private static double Mid(Func<double, double> f, double a, double b) {
-            return (b - a) * f((a + b) / 2);
+            Console.WriteLine($"Midpoint at {(b-a)}");
+            return (b - a) * f((a + b) / 2.0);
         }
 
         // Rightpoint rule implementation
@@ -92,21 +95,22 @@ namespace Practical_Task_6 {
         // Trapezoid rule implementation
         // formula taken from slide 12 of lecture 6
         private static double Trapezoid(Func<double, double> f, double a, double b) {
-            return (b - a) * (f(a) + f(b)) / 2;
+            return (b - a) * (f(a) + f(b)) / 2.0;
         }
 
         // Simpson's rule implementation
         // formula taken from slide 14 of lecture 6
         private static double Simpson(Func<double, double> f, double a, double b) {
-            return 1/6 * (b - a) * ( f(a) + 4 * f((a + b) / 2) + f(b) );
+            return (1.0/6.0 * (b - a) * ( f(a) + 4.0 * f((a + b) / 2.0) + f(b) ));
         }
 
         public static void Main(string[] args) {
             /* Feel free to use this method to test your solution. */
             Func<double, double> f = (x) => {
-                return 2 * x;
+                return 2.0 * x;
             };
 
+            Console.WriteLine(f(2));
             Console.WriteLine(Integrate(f, 0, 2));
         }
     }
