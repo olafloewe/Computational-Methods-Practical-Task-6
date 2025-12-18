@@ -45,7 +45,7 @@ namespace Practical_Task_6 {
             }
 
             // recursive call
-            if (counter < 50 || (b - a) < 0.1) {
+            while (counter < 50 || (b - a) < 0.1) {
                 Console.WriteLine($"Recursion depth: {counter} a: {a} b: {b} b - a: {b - a}");
                 counter++;
                 result += Integrate(f, a, (b + a) / 2, rule, counter);
@@ -56,19 +56,14 @@ namespace Practical_Task_6 {
             switch (rule) {
                 case "rectangle-left":
                     return Left(f, a, b);
-                    break;
                 case "rectangle-mid":
                     return Mid(f, a, b);
-                    break;
                 case "rectangle-right":
                     return Right(f, a, b);
-                    break;
                 case "trapezoid":
                     return Trapezoid(f, a, b);
-                    break;
                 case "simpson":
                     return Simpson(f, a, b);
-                    break;
             }
 
 
