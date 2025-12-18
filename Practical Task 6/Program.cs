@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 namespace Practical_Task_6 {
     internal class Program {
         /*
+         
+        TODO
+        Your solution should support the following rules: „rectangle-left”, „rectangle-mid”, „rectangle-right”, „trapezoid”, „simpson” (being the default one).
+        You are supposed to split the [a, b] interval into subintervals of length at most 0.1, but not less than 50 intervals.
+
+         
         public static double Integrate(Func<double, double> f, double a, double b, string rule = "simpsons") {
             Input:
                 a continuous function to be integrated,
@@ -24,9 +30,80 @@ namespace Practical_Task_6 {
                 g(x) <- exp(x) + 1
                     Integrate(g, 0, 1) 								-> 2.7183   (using the Simpson’s rule)
         */
-        public static double Integrate(Func<double, double> f, double a, double b, string rule = "simpsons") {
-            /* Replace this with your code */
-            return 0;
+        public static double Integrate(Func<double, double> f, double a, double b, string rule = "simpsons", int counter = 0) {
+            string[] rules = { "rectangle-left", "rectangle-mid", "rectangle-right", "trapezoid", "simpson" };
+            double result = 0;
+
+            // weird case guard clause
+            if (a == 0 && b == 0) return 0;
+            // limit guard clause
+            if (a > b) throw new ArgumentException("Error: improper limits");
+            
+            // check if provided rule is accepted
+            if(!rules.Contains(rule)) {
+                rule = "simpson"; // default rule
+            }
+
+            // recursive call
+            if (counter < 50 || (b - a) < 0.1) {
+                Console.WriteLine($"Recursion depth: {counter} a: {a} b: {b} b - a: {b - a}");
+                counter++;
+                result += Integrate(f, a, (b + a) / 2, rule, counter);
+                result += Integrate(f, (b + a) / 2, b, rule, counter);
+            }
+
+            // base case
+            switch (rule) {
+                case "rectangle-left":
+                    return Left(f, a, b);
+                    break;
+                case "rectangle-mid":
+                    return Mid(f, a, b);
+                    break;
+                case "rectangle-right":
+                    return Right(f, a, b);
+                    break;
+                case "trapezoid":
+                    return Trapezoid(f, a, b);
+                    break;
+                case "simpson":
+                    return Simpson(f, a, b);
+                    break;
+            }
+
+
+
+            return result;
+        }
+
+        // Leftpoint rule implementation
+        // formula taken from slide 10 of lecture 6
+        private static double Left(Func<double,double>f, double a, double b) {
+            return (b - a) * f(a);
+        }
+
+        // Midpoint rule implementation
+        // formula taken from slide 10 of lecture 6
+        private static double Mid(Func<double, double> f, double a, double b) {
+            return (b - a) * f((a + b) / 2);
+        }
+
+        // Rightpoint rule implementation
+        // formula taken from slide 10 of lecture 6
+        private static double Right(Func<double, double> f, double a, double b) {
+            return (b - a) * f(b);
+        }
+
+        // Trapezoid rule implementation
+        // formula taken from slide 12 of lecture 6
+        private static double Trapezoid(Func<double, double> f, double a, double b) {
+            return (b - a) * (f(a) + f(b)) / 2;
+        }
+
+        // Simpson's rule implementation
+        // formula taken from slide 14 of lecture 6
+        private static double Simpson(Func<double, double> f, double a, double b) {
+            return 1/6 * (b - a) * ( f(a) + 4 * f((a + b) / 2) + f(b) );
         }
 
         public static void Main(string[] args) {
