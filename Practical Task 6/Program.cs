@@ -252,7 +252,38 @@ namespace Practical_Task_6 {
                     selectedFunc = (x) => { return 1 / (x + 1); }; // 1/(x+1)
                     break;
                 case "Logarithmic":
-                    selectedFunc = (x) => { return Math.Log(x + 1); }; // ln(x+1)
+                    double baseLog;
+
+                    // get parameters for function
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter base ( A * log base(B(x-C)) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out baseLog) || baseLog <= 0.0 || baseLog == 1.0);
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter A ( A * log {baseLog}(B(x-C)) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out a));
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter B ( {a} * log {baseLog}(B(x-C)) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out b));
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter C ( {a} * log {baseLog}({b}(x-C)) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out c));
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter D ( {a} * log {baseLog}({b}(x-{c})) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out d));
+
+                    Console.WriteLine($"Final equation:  ( {a} * log {baseLog}({b}(x-{c})) + {d} ): ");
+                    Console.ReadKey();
+
+                    selectedFunc = (x) => { return a * Math.Log(b*(x - c),baseLog) + d; }; // log(x)
                     break;
                 default:
                     throw new ArgumentException("Error: invalid function type");
