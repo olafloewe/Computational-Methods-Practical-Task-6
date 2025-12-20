@@ -140,6 +140,7 @@ namespace Practical_Task_6 {
                 input -= 1; // adjust for list index
             } while (input < 0 || input >= functions.Length);
 
+            double a, b, c, d;
             // construct selected function
             switch (functions[input]) {
                 case "Trigonometric":
@@ -158,8 +159,6 @@ namespace Practical_Task_6 {
                         int.TryParse(Console.ReadKey().KeyChar.ToString(), out trigInput);
                         trigInput -= 1; // adjust for list index
                     } while (trigInput < 0 || trigInput >= trigFunctions.Length);
-
-                    double a, b, c, d;
 
                     // get parameters for function
                     do {
@@ -215,7 +214,39 @@ namespace Practical_Task_6 {
                     selectedFunc = (x) => { return x * x + 2 * x + 1; }; // x^2 + 2x + 1
                     break;
                 case "Exponential":
-                    selectedFunc = (x) => { return Math.Exp(x); }; // e^x
+                    double baseExp;
+
+                    // get parameters for function
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter base ( A * base^B(x-C) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out baseExp) || baseExp <= 0.0 || baseExp == 1.0);
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter A ( A * {baseExp}^B(x-C) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out a));
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter B ( {a} * {baseExp}^B(x-C) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out b));
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter C ( {a} * {baseExp}^{b}(x-C) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out c));
+
+                    do {
+                        Console.Clear();
+                        Console.WriteLine($"Enter parameter D ( {a} * {baseExp}^{b}(x-{c}) + D ): ");
+                    } while (!double.TryParse(Console.ReadLine(), out d));
+
+                    Console.WriteLine($"Final equation:  ( {a} * {baseExp}^{b}(x-{c}) + {d} ): ");
+                    Console.ReadKey();
+
+                    selectedFunc = (x) => { return a * Math.Pow(baseExp,(b*(x-c))) + d; }; // e^x
+
                     break;
                 case "Rational":
                     selectedFunc = (x) => { return 1 / (x + 1); }; // 1/(x+1)
