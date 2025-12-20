@@ -230,19 +230,28 @@ namespace Practical_Task_6 {
             return selectedFunc;
         }
 
-        private static int[] SelectLimits() {
-            int lowerLimit = 0;
-            int upperLimit = 2;
-            Console.Clear();
-            Console.WriteLine("Enter the lower limit of integration: ");
+        // asks the user for limits and returns them as a double array
+        private static double[] SelectLimits() {
+            double lowerLimit = 0;
+            double upperLimit = 2;
 
-            return new int[] { lowerLimit, upperLimit };
+            // get limits for calculation
+            do {
+                Console.Clear();
+                Console.WriteLine("Enter the lower limit of integration: ");
+            } while (!double.TryParse(Console.ReadLine(), out lowerLimit));
+            do {
+                Console.Clear();
+                Console.WriteLine("Enter the upper limit of integration: ");
+            } while (!double.TryParse(Console.ReadLine(), out upperLimit));
+
+            return new double[] { lowerLimit, upperLimit };
         }
 
         public static void Main(string[] args) {
             string rule = SelectRule();
             Func<Double,Double> func = SelectFunc();
-            int[] limits = SelectLimits();
+            double[] limits = SelectLimits();
 
             // Execute integration and print result
             Console.Clear();
