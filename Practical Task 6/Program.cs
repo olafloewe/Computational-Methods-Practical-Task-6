@@ -360,6 +360,8 @@ namespace Practical_Task_6 {
             double[] limits = SelectLimits();
             double result = Integrate(func, limits[0], limits[1], rule);
 
+            // try rational function (polynomial: 1x^0)/(trig: 1 * sin(1 * x + 0) + 0)
+
             // Execute integration and print result
             Console.Clear();
             Console.WriteLine($"Result of the calculation: {(double.IsInfinity(result)? double.NaN : result)}");
