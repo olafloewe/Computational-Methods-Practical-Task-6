@@ -234,7 +234,6 @@ namespace Practical_Task_6 {
                         nums.Add(number);
                     } while (source.ToLower() != "q" && nums.Count <= 10);
 
-
                     // POLYNOMIAL DISPLAY
                     Console.Write("Polynomial:\t");
                     for (int i = 0; i < nums.ToArray().Length; i++) {
@@ -246,7 +245,15 @@ namespace Practical_Task_6 {
 
                     Console.ReadKey();
 
-                    selectedFunc = (x) => { return x * x + 2 * x + 1; }; // x^2 + 2x + 1
+                    selectedFunc = (x) => {
+                        double result = 0.0;
+                        for (int i = 0; i < nums.ToArray().Length; i++) {
+                            result += nums.ToArray()[i] * Math.Pow(x, nums.ToArray().Length - (i + 1));
+                        }
+
+                        return result; 
+                    }; // constructed polynomial function
+
                     break;
                 case "Exponential":
                     double baseExp;
