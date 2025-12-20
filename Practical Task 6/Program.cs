@@ -291,7 +291,9 @@ namespace Practical_Task_6 {
 
                     break;
                 case "Rational":
-                    selectedFunc = (x) => { return 1 / (x + 1); }; // 1/(x+1)
+                    Func<Double, Double> func1 = SelectFunc();
+                    Func<Double, Double> func2 = SelectFunc();
+                    selectedFunc = (x) => { return func1(x) / func2(x); }; // 1/(x+1)
                     break;
                 case "Logarithmic":
                     double baseLog;
@@ -356,10 +358,11 @@ namespace Practical_Task_6 {
             string rule = SelectRule();
             Func<Double,Double> func = SelectFunc();
             double[] limits = SelectLimits();
+            double result = Integrate(func, limits[0], limits[1], rule);
 
             // Execute integration and print result
             Console.Clear();
-            Console.WriteLine($"Result of the calculation: {Integrate(func, limits[0], limits[1], rule)}");
+            Console.WriteLine($"Result of the calculation: {(double.IsInfinity(result)? double.NaN : result)}");
         }
     }
 }
