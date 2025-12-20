@@ -211,6 +211,41 @@ namespace Practical_Task_6 {
                     break;
 
                 case "Polynomial":
+
+                    List<double> nums = new List<double>();
+                    string source;
+                    double number;
+
+                    // loop to input polynomial coefficients
+                    do {
+                        // DISPLAY CURRENT INPUT
+                        Console.Clear();
+                        Console.Write("Coefficients so far: [ ");
+                        foreach (double i in nums) {
+                            Console.Write($"{i}, ");
+                        }
+                        Console.Write("]\n");
+
+                        Console.WriteLine("Please enter up to 10 positive or negative coefficients: \nEnter 'Q' or 'q' to stop entry");
+                        source = Console.ReadLine();
+
+                        // guard clause for input read
+                        if (!double.TryParse(source, out number)) continue;
+                        nums.Add(number);
+                    } while (source.ToLower() != "q" && nums.Count <= 10);
+
+
+                    // POLYNOMIAL DISPLAY
+                    Console.Write("Polynomial:\t");
+                    for (int i = 0; i < nums.ToArray().Length; i++) {
+                        if (nums.ToArray()[i] == 0.0) continue;
+                        string sign = (nums.ToArray()[i] > 0) ? "+" : "";
+                        Console.Write($"{sign}{nums.ToArray()[i]}x^{nums.ToArray().Length - (i + 1)} ");
+                    }
+                    Console.WriteLine();
+
+                    Console.ReadKey();
+
                     selectedFunc = (x) => { return x * x + 2 * x + 1; }; // x^2 + 2x + 1
                     break;
                 case "Exponential":
